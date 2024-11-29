@@ -1,0 +1,120 @@
+---
+title: "Intro_to_RMarkdown_Session1"
+author: "Michelle Laker"
+date: "`r Sys.Date()`"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Abstract
+
+Some text here
+
+I just love to write and talk (blah blah blah ...)
+
+## Subheading signified by double hashes
+
+Some more text here 
+
+### More sections
+
+text goes here
+
+**in bold**
+
+_this should be in italics_ ^superscripted^ 
+
+This is where the Methods Section [link](#section-methods)
+# Data and Methods {#section-methods}
+
+# Lists
+
+1. My paper has a neural network
+2. It has 3 parameters
+3. I love it
+  a. code
+  b. data
+  c. everything is available
+  
+![R Logo](img/Rlogo.png)
+
+# Tables
+
+| A | B | C | D | E |
+|---|---|---|---|---|
+| 0 | 2 | 0 | 2 | 0 |
+| 1 | 0 | 0 | 0 | 1 |
+| 0 | 1 | 0 | 1 | 1 |
+
+# How to include code blocks
+
+```
+print("Hello world")
+x <- 2+3
+print(x)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r, included=FALSE}
+
+# headings
+
+cat("Hello world")
+z = 6/2
+cat(z)
+
+download.file(url="https://raw.githubusercontent.com/cambiotraining/reproducibility-training/master/data/gapminder_data.csv", destfile="data/gapminder_data.csv")
+
+```
+
+My paper has a section [text]
+```{r data-munging, echo=FALSE}
+
+library(tidyverse)
+library(rmarkdown)
+library(kableExtra)
+library(ggpubr)
+
+pop_data <- readr::read_csv("data/gapminder_data.csv")
+plot(pop_data$lifeExp, pop_data$gdpPercap)
+
+euro_data <- pop_data %>%
+filter(continent == "Europe")
+
+```
+
+```{r}
+##Challenge Attempt
+euro_data$year <- as.factor(euro_data$year)
+euro_plot <- ggplot(data = euro_data, mapping = aes(x = year, y = lifeExp)) + geom_violin()
+
+uk_data <- filter(pop_data, country == "United Kingdom")
+uk_plot <- plot(uk_data$year, uk_data$lifeExp)
+
+ggarrange(euro_plot, uk_plot, ncol = 2, nrow = 1)
+
+
